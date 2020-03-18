@@ -144,6 +144,17 @@ public struct LineChartStyle {
     public var lineColor: Color = .white
     public var gradient: Gradient = Gradient(colors: [])
     
+    public init(drawTicks: Bool = true, drawGrid: Bool = true,
+                gridColor: Color = Color.gray.opacity(0.3),
+                lineColor: Color = .white,
+                gradient: Gradient = Gradient(colors: [])) {
+        
+        self.drawTicks = drawTicks
+        self.drawGrid = drawGrid
+        self.gridColor = gridColor
+        self.lineColor = lineColor
+        self.gradient = gradient
+    
     public static let red = LineChartStyle(lineColor: .red,
                                     gradient: Gradient(colors: [
                                         Color.red.opacity(0.5),
