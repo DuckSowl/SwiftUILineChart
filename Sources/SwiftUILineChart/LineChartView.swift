@@ -8,12 +8,12 @@
 import SwiftUI
 
 public struct LineChartView: View {
-    var values: [Double]
-    var horizontalTicks: [String]
-    var verticalTicks: [String]
-    var style: LineChartStyle
+    public var values: [Double]
+    public var horizontalTicks: [String]
+    public var verticalTicks: [String]
+    public var style: LineChartStyle
     
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
                 ZStack(alignment: .leading) {
@@ -118,7 +118,7 @@ public struct LineChartView: View {
         return path
     }
     
-    func closedPath(in size: CGSize) -> Path {
+    private func closedPath(in size: CGSize) -> Path {
         var path = self.path(in: size)
         
         path.addLine(to: CGPoint(x: size.width, y: size.height))
@@ -130,25 +130,25 @@ public struct LineChartView: View {
 }
 
 public struct LineChartStyle {
-    var drawTicks: Bool = true
-    var drawGrid: Bool = true
-    var gridColor: Color = Color.gray.opacity(0.3)
-    var lineColor: Color = .white
-    var gradient: Gradient = Gradient(colors: [])
+    public var drawTicks: Bool = true
+    public var drawGrid: Bool = true
+    public var gridColor: Color = Color.gray.opacity(0.3)
+    public var lineColor: Color = .white
+    public var gradient: Gradient = Gradient(colors: [])
     
-    static let red = LineChartStyle(lineColor: .red,
+    public static let red = LineChartStyle(lineColor: .red,
                                     gradient: Gradient(colors: [
                                         Color.red.opacity(0.5),
                                         Color.red.opacity(0.1)
                                     ]))
     
-    static let green = LineChartStyle(lineColor: .green,
+    public static let green = LineChartStyle(lineColor: .green,
                                       gradient: Gradient(colors: [
                                         Color.green.opacity(0.5),
                                         Color.green.opacity(0.1)
                                       ]))
     
-    static let redOutline = LineChartStyle(drawTicks: false,
+    public static let redOutline = LineChartStyle(drawTicks: false,
                                            drawGrid: false,
                                            lineColor: .red,
                                            gradient: Gradient(colors: [
@@ -156,7 +156,7 @@ public struct LineChartStyle {
                                             Color.red.opacity(0.1)
                                            ]))
     
-    static let greenOutline = LineChartStyle(drawTicks: false,
+    public static let greenOutline = LineChartStyle(drawTicks: false,
                                              drawGrid: false,
                                              lineColor: .green,
                                              gradient: Gradient(colors: [
