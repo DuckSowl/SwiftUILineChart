@@ -154,6 +154,7 @@ public struct LineChartStyle {
         self.gridColor = gridColor
         self.lineColor = lineColor
         self.gradient = gradient
+    }
     
     public static let red = LineChartStyle(lineColor: .red,
                                     gradient: Gradient(colors: [
