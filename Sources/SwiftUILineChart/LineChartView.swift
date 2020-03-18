@@ -13,6 +13,14 @@ public struct LineChartView: View {
     public var verticalTicks: [String]
     public var style: LineChartStyle
     
+    public init(values: [Double], horizontalTicks: [String],
+                verticalTicks: [String], style: LineChartStyle) {
+        self.values = values
+        self.horizontalTicks = horizontalTicks
+        self.verticalTicks = verticalTicks
+        self.style = style
+    }
+    
     public var body: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
