@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LineChartView: View {
+public struct LineChartView: View {
     var values: [Double]
     var horizontalTicks: [String]
     var verticalTicks: [String]
@@ -34,7 +34,7 @@ struct LineChartView: View {
                 }
                 
                 self.separatorView(.vertical)
-
+                
                 self.ticksView(.horizontal)
                     .frame(height: 30)
             }
@@ -51,7 +51,7 @@ struct LineChartView: View {
         Group {
             if self.style.drawGrid || self.style.drawTicks {
                 self.style.gridColor.frame(width: orientation == .horizontal ? 1 : .none,
-                                     height: orientation == .vertical ? 1 : .none)
+                                           height: orientation == .vertical ? 1 : .none)
             } else {
                 EmptyView()
             }
@@ -75,7 +75,7 @@ struct LineChartView: View {
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
                                 .padding(4)
-                          },
+                },
                           separator: { self.separatorView(orientation) },
                           orientation: orientation)
             } else {
@@ -129,7 +129,7 @@ struct LineChartView: View {
     }
 }
 
-struct LineChartStyle {
+public struct LineChartStyle {
     var drawTicks: Bool = true
     var drawGrid: Bool = true
     var gridColor: Color = Color.gray.opacity(0.3)
