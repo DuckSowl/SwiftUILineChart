@@ -8,16 +8,19 @@
 import SwiftUI
 
 public struct LineChartView: View {
-    public var values: [Double]
-    public var horizontalTicks: [String]
-    public var verticalTicks: [String]
+    public var data: [Double]
+    public var horizontalTicks: [String]?
+    public var verticalTicks: [String]?
     public var style: LineChartStyle
     
-    public init(values: [Double], horizontalTicks: [String],
-                verticalTicks: [String], style: LineChartStyle) {
-        self.values = values
-        self.horizontalTicks = horizontalTicks
-        self.verticalTicks = verticalTicks
+    public init(data: [Double],
+                horizontalTicks: [String]? = nil,
+                verticalTicks: [String]? = nil,
+                style: LineChartStyle = LineChartStyle()) {
+        
+        self.data = data
+        self.horizontalTicks = horizontalTicks != [] ? horizontalTicks : nil
+        self.verticalTicks = verticalTicks != [] ? verticalTicks : nil
         self.style = style
     }
     
@@ -41,17 +44,24 @@ public struct LineChartView: View {
                     }
                 }
                 
-                self.separatorView(.vertical)
+                if self.ticks(for: .horizontal) != nil {
+                    self.separatorView(.vertical)
+                }
                 
                 self.ticksView(.horizontal)
                     .frame(height: 30)
             }
             
-            VStack {
+            VStack(spacing: 0) {
                 self.ticksView(.vertical)
-                    .fixedSize(horizontal: true, vertical: false)
-                Spacer(minLength: 30)
+                
+                if self.ticks(for: .horizontal) != nil && self.ticks(for: .vertical) != nil {
+                    self.separatorView(.vertical)
+                }
+        
+                Spacer(minLength: self.ticks(for: .horizontal) == nil ? 0 : 30)
             }
+            .fixedSize(horizontal: true, vertical: false)
         }
     }
     
@@ -67,17 +77,24 @@ public struct LineChartView: View {
     }
     
     private func gridView(_ orientation: Orientation) -> some View {
-        StackView(data: orientation == .horizontal ? horizontalTicks
-            : verticalTicks,
-                  content: { _ in EmptyView() },
-                  separator: { self.separatorView(orientation) },
-                  orientation: orientation)
+        let ticks = self.ticks(for: orientation)
+        return Group {
+            if ticks != nil {
+                StackView(data: ticks!,
+                          content: { _ in EmptyView() },
+                          separator: { self.separatorView(orientation) },
+                          orientation: orientation)
+            } else {
+                EmptyView()
+            }
+        }
     }
     
     private func ticksView(_ orientation: Orientation) -> some View {
-        Group {
-            if self.style.drawTicks {
-                StackView(data: ticks(for: orientation),
+        let ticks = self.ticks(for: orientation)
+        return Group {
+            if self.style.drawTicks && ticks != nil {
+                StackView(data: ticks!,
                           content: {
                             Text($0)
                                 .font(.system(size: 16, weight: .semibold))
@@ -92,26 +109,26 @@ public struct LineChartView: View {
         }
     }
     
-    private func ticks(for orientation: Orientation) -> [String] {
+    private func ticks(for orientation: Orientation) -> [String]? {
         return orientation == .horizontal ? horizontalTicks : verticalTicks
     }
     
     private func path(in size: CGSize) -> Path {
         var path = Path()
         
-        if values.isEmpty { return path }
+        if data.isEmpty { return path }
         
-        let minValue = values.min()!
-        let maxValue = values.max()!
+        let minValue = data.min()!
+        let maxValue = data.max()!
         let deltaValue = maxValue - minValue
         
         var previousPosition = CGPoint(x: 0,
-                                       y: size.height - (size.height / CGFloat(deltaValue)) * CGFloat(values[0] - minValue))
+                                       y: size.height - (size.height / CGFloat(deltaValue)) * CGFloat(data[0] - minValue))
         
         path.move(to: previousPosition)
         
-        for value in values[1...].enumerated() {
-            let nextPosition = CGPoint(x: (size.width / CGFloat(values.count - 1)) * CGFloat(value.offset + 1),
+        for value in data[1...].enumerated() {
+            let nextPosition = CGPoint(x: (size.width / CGFloat(data.count - 1)) * CGFloat(value.offset + 1),
                                        y: size.height - (size.height / CGFloat(deltaValue)) * CGFloat(value.element - minValue))
             
             let control = CGPoint(x: CGFloat.random(in: previousPosition.x..<nextPosition.x),
