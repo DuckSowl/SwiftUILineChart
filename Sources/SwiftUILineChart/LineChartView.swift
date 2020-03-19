@@ -116,22 +116,22 @@ public struct LineChartView: View {
     private func path(in size: CGSize) -> Path {
         var path = Path()
         
-        if data.isEmpty { return path }
+        if data.count <= 1 { return path }
         
         let minValue = data.min()!
         let maxValue = data.max()!
-        let deltaValue = maxValue - minValue
+        let deltaValue = CGFloat(maxValue - minValue)
         
         var previousPosition = CGPoint(x: 0,
-                                       y: size.height - (size.height / CGFloat(deltaValue)) * CGFloat(data[0] - minValue))
+                                       y: size.height * (1 -  CGFloat(data[0] - minValue) / deltaValue))
         
         path.move(to: previousPosition)
         
         for value in data[1...].enumerated() {
             let nextPosition = CGPoint(x: (size.width / CGFloat(data.count - 1)) * CGFloat(value.offset + 1),
-                                       y: size.height - (size.height / CGFloat(deltaValue)) * CGFloat(value.element - minValue))
+                                       y: size.height * (1 - CGFloat(value.element - minValue) / deltaValue))
             
-            let control = CGPoint(x: CGFloat.random(in: previousPosition.x..<nextPosition.x),
+            let control = CGPoint(x: (previousPosition.x + 2 * nextPosition.x) / 3,
                                   y: (previousPosition.y + nextPosition.y) / 2)
             
             path.addQuadCurve(to: nextPosition,
