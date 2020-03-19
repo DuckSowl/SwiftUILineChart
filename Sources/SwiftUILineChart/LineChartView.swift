@@ -110,7 +110,8 @@ public struct LineChartView: View {
     }
     
     private func ticks(for orientation: Orientation) -> [String]? {
-        return orientation == .horizontal ? horizontalTicks : verticalTicks
+        return orientation == .horizontal ? horizontalTicks
+                                          : verticalTicks?.reversed()
     }
     
     private func path(in size: CGSize) -> Path {
@@ -200,4 +201,6 @@ public struct LineChartStyle {
                                                 Color.green.opacity(0.5),
                                                 Color.green.opacity(0.1)
                                              ]))
+    
+    public static let light = LineChartStyle(lineColor: .black)
 }
