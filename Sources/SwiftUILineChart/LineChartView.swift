@@ -98,7 +98,7 @@ public struct LineChartView: View {
                           content: {
                             Text($0)
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(.secondary)
                                 .padding(4)
                 },
                           separator: { self.separatorView(orientation) },
